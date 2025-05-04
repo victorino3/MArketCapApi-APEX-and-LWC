@@ -1,0 +1,63 @@
+<template>
+    <lightning-card title="CoinMarketCap Search" icon-name="custom:custom67">
+        <div class="slds-m-around_medium">
+            <lightning-input 
+                label="Cryptocurrency Symbol" 
+                placeholder="e.g., BTC, ETH" 
+                value={symbol}
+                onchange={handleSymbolChange}>
+            </lightning-input>
+
+            <lightning-button 
+                label="Search" 
+                variant="brand" 
+                onclick={handleSearch}
+                class="slds-m-top_small">
+            </lightning-button>
+
+            <template if:true={isLoading}>
+                <div class="slds-m-vertical_medium">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:true={error}>
+                <div class="slds-m-top_medium slds-text-color_error">
+                    {error}
+                </div>
+            </template>
+
+            <template if:true={coinData}>
+                <div class="slds-m-top_medium slds-box slds-theme_shade">
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_10-of-12">
+                            <h2 class="slds-text-heading_medium slds-m-bottom_small">Result for {coinData.symbol}</h2>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-align_right">
+                            <lightning-button 
+                                label="Save Coin"
+                                variant="neutral"
+                                onclick={handleSaveCoin}
+                                class="slds-m-left_x-small">
+                            </lightning-button>
+                        </div>
+                        <template if:true={showModal}>
+                            <c-coin-modal-flow coin-data={coinData} onclosemodal={handleModalClose}></c-coin-modal-flow>
+                        </template>
+                    </div>
+                    <p><strong>Name:</strong> {coinData.name}</p>
+                    <p><strong>Symbol:</strong> {coinData.symbol}</p>
+                    <p><strong>Price (USD):</strong> 
+                        <lightning-formatted-number value={coinData.price} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                    </p>
+                    <p><strong>Market Cap (USD):</strong> 
+                        <lightning-formatted-number value={coinData.marketCap} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                    </p>
+                    <p><strong>CoinMarketCap URL:</strong> 
+                        <a href={coinData.coinMarketCapUrl} target="_blank"> {coinData.coinMarketCapUrl}</a>
+                    </p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

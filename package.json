@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@lwc/engine-dom": "^8.18.2"
+  }
+}

@@ -15,9 +15,14 @@ public with sharing class CoinMarketCapController {
         FROM CoinMarketCapUrl__mdt
         LIMIT 1
     ].coinMarketCapUrl__c;
+
     @TestVisible
     public static String baseCoinMarketCapUrlTEst = URL_COIN;
 
+    @InvocableMethod(label='Get Desired CoinData' description='Returns CoinDataWrapper.')
+    public static CoinDataWrapper getCoinToFlow(String symbol) {
+        return this.getCoinData(symbol);
+    }
 
     @AuraEnabled(cacheable=true)
     public static CoinDataWrapper getCoinData(String symbol) {

@@ -20,8 +20,13 @@ public with sharing class CoinMarketCapController {
     public static String baseCoinMarketCapUrlTEst = URL_COIN;
 
     @InvocableMethod(label='Get Desired CoinData' description='Returns CoinDataWrapper.')
-    public static CoinDataWrapper getCoinToFlow(List<String> symbols) {
-        return CoinMarketCapController.getCoinData(symbol[0]);
+    public static List<CoinDataWrapperFlow> getCoinToFlow(List<String> symbols) {
+        CoinDataWrapperFlow resultFlow = new CoinDataWrapperFlow();
+        CoinDataWrapper result = CoinMarketCapController.getCoinData(symbols[0]);
+        resultFlow.symbol = result.symbol;
+        resultFlow.price = result.price;
+        return new List<CoinDataWrapperFlow>{ resultFlow };
+        
     }
 
     @AuraEnabled(cacheable=true)

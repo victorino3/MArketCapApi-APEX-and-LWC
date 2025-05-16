@@ -25,6 +25,8 @@ public with sharing class CoinMarketCapController {
         CoinDataWrapper result = CoinMarketCapController.getCoinData(symbols[0]);
         resultFlow.symbol = result.symbol;
         resultFlow.price = result.price;
+
+        System.debug(' Used(Test In Flow): ' + resultFlow);
         return new List<CoinDataWrapperFlow>{ resultFlow };
         
     }

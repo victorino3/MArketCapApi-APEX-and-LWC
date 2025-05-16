@@ -7,7 +7,7 @@ public with sharing class EmailLimitChecker {
 
         EmailLimitResult result = new EmailLimitResult();
         result.allowed = (used < allowed) ? 1 : 0;
-
+        System.debug('Email Invocations Used(Test In Flow): ' + used);
         return new List<EmailLimitResult>{ result };
     }
 

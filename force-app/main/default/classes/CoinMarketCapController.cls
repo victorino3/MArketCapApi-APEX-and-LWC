@@ -26,7 +26,9 @@ public with sharing class CoinMarketCapController {
         resultFlow.symbol = result.symbol;
         resultFlow.price = result.price;
 
-        System.debug(' Used(Test In Flow): ' + resultFlow);
+        System.debug(' Used(Test In Flow resultFlow): ' + resultFlow);
+        System.debug(' Used(Test In Flow getCoinData): ' + result);
+        System.debug(' Used(Test In Flow symbol): ' + symbols[0]);
         return new List<CoinDataWrapperFlow>{ resultFlow };
         
     }

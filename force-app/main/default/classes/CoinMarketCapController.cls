@@ -19,18 +19,16 @@ public with sharing class CoinMarketCapController {
     @TestVisible
     public static String baseCoinMarketCapUrlTEst = URL_COIN;
 
-    @InvocableMethod(label='Get Desired CoinData' description='Returns CoinDataWrapper.')
-    public static List<CoinDataWrapperFlow> getCoinToFlow(List<String> symbols) {
-        CoinDataWrapperFlow resultFlow = new CoinDataWrapperFlow();
-        CoinDataWrapper result = CoinMarketCapController.getCoinData(symbols[0]);
-        resultFlow.symbol = result.symbol;
-        resultFlow.price = result.price;
-
-        System.debug(' Used(Test In Flow resultFlow): ' + resultFlow);
-        System.debug(' Used(Test In Flow getCoinData): ' + result);
-        System.debug(' Used(Test In Flow symbol): ' + symbols[0]);
-        return new List<CoinDataWrapperFlow>{ resultFlow };
-        
+    @InvocableMethod(label='Initiate Get CoinData Async' description='Asynchronously fetches CoinData and publishes a Platform Event.')
+    public static void initiateGetCoinDataAsync(List<String> symbols) {
+        if (symbols != null && !symbols.isEmpty() && String.isNotBlank(symbols[0])) {
+            String symbolToProcess = symbols[0].toUpperCase();
+            // String correlationId = generateUniqueCorrelationId(); // Implement this if using CorrelationId__c
+            System.enqueueJob(new CoinDataCalloutQueueable(symbolToProcess));
+        } else {
+            System.debug('CoinMarketCapController.initiateGetCoinDataAsync: No symbol provided or symbol list is empty.');
+            // Optionally, publish an error Platform Event here immediately if input is invalid
+        }
     }
 
     @AuraEnabled(cacheable=true)
@@ -54,6 +52,11 @@ public with sharing class CoinMarketCapController {
         HttpResponse response;
 
         try {
+            System.debug('DML statements before callout: ' + Limits.getDmlStatements() + ', DML rows: ' + Limits.getDmlRows());
+            if (Limits.getDmlStatements() > 0) {
+                System.debug('CRITICAL_DEBUG: Uncommitted DML detected before callout!');
+                // This confirms DML occurred earlier in this transaction.
+            }
             response = http.send(request);
             Integer statusCode = response.getStatusCode();
 

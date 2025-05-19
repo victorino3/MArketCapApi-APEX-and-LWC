@@ -41,7 +41,7 @@ public with sharing class CoinMarketCapController {
             result.error = 'Please enter a cryptocurrency symbol.';
             return result;
         }
-
+        System.debug(' Used(Test In Flow symbol GetCoin): ' + symbol);
         String encodedSymbol = EncodingUtil.urlEncode(symbol.toUpperCase(), 'UTF-8');
         String fullEndpoint = 'callout:CoinMarketEndPoint/v2/cryptocurrency/quotes/latest?symbol=' + encodedSymbol + '&convert=USD';
 

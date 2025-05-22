@@ -17,7 +17,7 @@ public class CoinDataCalloutQueueable implements Queueable, Database.AllowsCallo
             event.Name__c = calloutResult.name;
             event.Symbol__c = calloutResult.symbol; 
             event.Price__c = calloutResult.price;
-            //event.MarketCap__c = calloutResult.marketCap;
+            event.MarketCap__c = calloutResult.marketCap;
             //event.CoinMarketCapUrl__c = calloutResult.coinMarketCapUrl;
         } else {
             event.WasSuccessful__c = false;

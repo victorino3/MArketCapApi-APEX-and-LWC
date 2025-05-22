@@ -24,6 +24,8 @@ public with sharing class CoinMarketCapController {
         if (symbols != null && !symbols.isEmpty() && String.isNotBlank(symbols[0])) {
             String symbolToProcess = symbols[0].toUpperCase();
             // String correlationId = generateUniqueCorrelationId(); // Implement this if using CorrelationId__c
+            System.debug('CoinDataCalloutQueueable: Callout result for symbol ' + symbols[0] );
+        
             System.enqueueJob(new CoinDataCalloutQueueable(symbolToProcess));
         } else {
             System.debug('CoinMarketCapController.initiateGetCoinDataAsync: No symbol provided or symbol list is empty.');
@@ -39,7 +41,7 @@ public with sharing class CoinMarketCapController {
             result.error = 'Please enter a cryptocurrency symbol.';
             return result;
         }
-        System.debug(' Used(Test In Flow symbol GetCoin): ' + symbol);
+        System.debug('Called in GetCoin: ' + symbol);
         String encodedSymbol = EncodingUtil.urlEncode(symbol.toUpperCase(), 'UTF-8');
         String fullEndpoint = 'callout:CoinMarketEndPoint/v2/cryptocurrency/quotes/latest?symbol=' + encodedSymbol + '&convert=USD';
 

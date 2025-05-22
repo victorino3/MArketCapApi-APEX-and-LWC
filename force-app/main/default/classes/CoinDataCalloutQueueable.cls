@@ -7,7 +7,7 @@ public class CoinDataCalloutQueueable implements Queueable, Database.AllowsCallo
 
     public void execute(QueueableContext context) {
         CoinMarketCapController.CoinDataWrapper calloutResult = CoinMarketCapController.getCoinData(this.symbol);
-
+        System.debug('CoinDataCalloutQueueable: Callout result for symbol ' + this.symbol + ': ' + calloutResult);
         Coin_Data_Response__e event = new Coin_Data_Response__e(
             Symbol__c = this.symbol 
         );
